@@ -1,2 +1,2 @@
 # Usage
-python3 main.py keyword1 keyword2 ...
+```python3 main.py keyword1 keyword2 ...```
