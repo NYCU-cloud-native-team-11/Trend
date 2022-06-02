@@ -2,7 +2,9 @@ import sys
 import requests
 from pytrends.request import TrendReq
 import json
-import datetime
+from datetime import datetime
+import pprint
+import calendar
 
 
 def get_input(argv_lists):
@@ -34,8 +36,8 @@ def res_process(res):
 
 def get_trend(list_key):
     keywords = list_key
-    Time_Frame = 'now 1-d'
-    geo = ''
+    Time_Frame = 'now 1-H'
+    geo = 'TW'
     cat = 0
     pytrend = TrendReq(hl='en-US', tz=360)
 
@@ -46,25 +48,31 @@ def get_trend(list_key):
         geo=geo,
         gprop='')
     interest_over_time_df = pytrend.interest_over_time()
-    # print(interest_over_time_df)
+
     preload = json.loads(
         interest_over_time_df.to_json(orient='table'))['data']
+
+    total_count = 0
     for i in range(len(preload)):
         del preload[i]['isPartial']
-    # result = preload  # 一段時間內的趨勢
+    # pprint.pprint(preload) # for debug
     json_list = []
-    my_dict = {"company": [], "count": [], "date": []}
+    for j in range(len(keywords)):
+        my_dict = {"company": [], "count": [], "date": []}
+        company = keywords[j]
+        for i in range(len(preload)):
+            total_count += preload[i][company]
+        my_dict["company"] = company
+        my_dict["count"] = total_count
+        time = preload[len(
+            preload)-1]['date'].replace("T", " ").replace("Z", "").split(".")[0]
+        d = datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
+        ts = calendar.timegm(d.utctimetuple())
+        my_dict["date"] = str(datetime.fromtimestamp(ts))
+        json_list.append(my_dict)
 
-    result = preload[len(preload)-1]  # 最新的趨勢
-    for i in result:
-        if i != "date":
-            my_dict["company"] = i
-            my_dict["count"] = result[i]
-            my_dict["date"] = result['date'].split('T')[0]
-            json_list.append(my_dict)
-            my_dict = {"company": [], "count": [], "date": []}
     json_list = json.dumps(json_list).replace("[", "").replace("]", "")
-    # print(json_list)
+    print(json_list)
     return json_list
 
 
