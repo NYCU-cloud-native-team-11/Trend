@@ -34,8 +34,8 @@ def res_process(res):
 
 def get_trend(list_key):
     keywords = list_key
-    Time_Frame = 'today 1-m'
-    geo = 'TW'
+    Time_Frame = 'now 1-d'
+    geo = ''
     cat = 0
     pytrend = TrendReq(hl='en-US', tz=360)
 
@@ -55,7 +55,7 @@ def get_trend(list_key):
     json_list = []
     my_dict = {"company": [], "count": [], "date": []}
 
-    result = preload[len(preload)-2]  # 最新的趨勢
+    result = preload[len(preload)-1]  # 最新的趨勢
     for i in result:
         if i != "date":
             my_dict["company"] = i
