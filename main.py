@@ -55,20 +55,27 @@ def get_trend(list_key):
     total_count = 0
     for i in range(len(preload)):
         del preload[i]['isPartial']
-    # pprint.pprint(preload) # for debug
+    pprint.pprint(preload)  # for debug
     json_list = []
     for j in range(len(keywords)):
         my_dict = {"company": [], "count": [], "date": []}
         company = keywords[j]
         for i in range(len(preload)):
             total_count += preload[i][company]
+
         my_dict["company"] = company
         my_dict["count"] = total_count
-        time = preload[len(
-            preload)-1]['date'].replace("T", " ").replace("Z", "").split(".")[0]
-        d = datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
-        ts = calendar.timegm(d.utctimetuple())
-        my_dict["date"] = str(datetime.fromtimestamp(ts))
+        try:
+            time = preload[len(
+                preload)-1]['date'].replace("T", " ").replace("Z", "").split(".")[0]
+            d = datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
+            ts = calendar.timegm(d.utctimetuple())
+            my_dict["date"] = str(datetime.fromtimestamp(ts))
+        except:
+            time = str(datetime.now()).split(".")[0]
+            d = datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
+            ts = calendar.timegm(d.utctimetuple())
+            my_dict["date"] = str(datetime.fromtimestamp(ts))
         json_list.append(my_dict)
 
     json_list = json.dumps(json_list).replace("[", "").replace("]", "")
