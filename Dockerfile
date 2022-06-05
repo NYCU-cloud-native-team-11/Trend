@@ -1,12 +1,10 @@
-# Select a base image
-FROM node:alpine
+FROM python:3.9
 
-# Run some commands and configurations
-WORKDIR /usr/src/app
-COPY package*.json ./
-RUN npm install
-COPY . .
-EXPOSE 8080
+WORKDIR /app
 
-# Set startup commands
-CMD [ "npm", "start" ]
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY src /app
+
+CMD [ "python", "main.py","TSMC", "ASML", "SUMCO" ]
