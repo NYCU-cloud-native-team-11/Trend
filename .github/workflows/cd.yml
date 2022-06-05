@@ -6,7 +6,7 @@ on:
       - 'main'
 
 env:
-  IMAGE: <Change your IMAGE NAME>
+  IMAGE: trends
   
 
 jobs:
