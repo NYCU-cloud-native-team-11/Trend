@@ -15,7 +15,7 @@ def get_input(argv_lists):
     for i in range(len(argv_lists)):
         if i != 0:
             list_key.append(argv_lists[i].replace("-", " "))
-    print(list_key)
+    # print(list_key)
     return list_key
 
 
@@ -80,7 +80,7 @@ def get_trend(list_key):
         json_list.append(my_dict)
 
     json_list = json.dumps(json_list).replace("[", "").replace("]", "")
-    print(json_list)
+    # print(json_list)
     return json_list
 
 
