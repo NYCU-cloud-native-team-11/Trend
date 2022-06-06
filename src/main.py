@@ -99,7 +99,7 @@ def main(list_key):
         sys.exit(1)
     url = protocol+"://" + host + api
     json_list = get_trend(list_key)
-    print(json_list)
+    # print(json_list)
     res = upload_data(url, json_list)
     res_process(res)
 
