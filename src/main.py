@@ -56,7 +56,7 @@ def get_trend(list_key):
     total_count = 0
     for i in range(len(preload)):
         del preload[i]['isPartial']
-    pprint.pprint(preload)  # for debug
+    # pprint.pprint(preload)  # for debug
     json_list = []
     for j in range(len(keywords)):
         my_dict = {"company": [], "count": [], "date": []}
