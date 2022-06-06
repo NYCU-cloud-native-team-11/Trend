@@ -73,27 +73,21 @@ def get_trend(list_key):
                 preload)-1]['date'].replace("T", " ").replace("Z", "").split(".")[0]
             d = datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
             ts = calendar.timegm(d.utctimetuple())
-            my_dict["date"] = str(datetime.fromtimestamp(ts)).split(" ")[0]
+            my_dict["date"] = str(datetime.fromtimestamp(ts))
         except:
-            time = str(datetime.now()).split(".")[0]
+            time = str(datetime.now())
             d = datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
             ts = calendar.timegm(d.utctimetuple())
-            my_dict["date"] = str(datetime.fromtimestamp(ts))  # .split(" ")[0]
+            my_dict["date"] = str(datetime.fromtimestamp(ts))
         json_list.append(my_dict)
-    if len(json_list) > 1:
-        return json.dumps(json_list), len(json_list)
-    else:
-        return json.dumps(json_list).replace("[", "").replace("]", ""), len(json_list)
+    return json.dumps(json_list)
 
 
 def main(list_key):
-    json_list, len_json = get_trend(list_key)
+
     protocol = os.getenv('PROTOCOL')
     host = os.getenv('HOST')
-    if len_json > 1:
-        api = os.getenv('API_POST_MANY')
-    else:
-        api = os.getenv('API_POST')
+    api = os.getenv('API')
     if protocol == None:
         print("please set PROTOCAL environment variable")
         sys.exit(1)
@@ -104,6 +98,8 @@ def main(list_key):
         print("please set API environment variable")
         sys.exit(1)
     url = protocol+"://" + host + api
+    json_list = get_trend(list_key)
+    print(json_list)
     res = upload_data(url, json_list)
     res_process(res)
 
