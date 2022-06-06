@@ -81,15 +81,19 @@ def get_trend(list_key):
             my_dict["date"] = str(datetime.fromtimestamp(ts))  # .split(" ")[0]
         json_list.append(my_dict)
     if len(json_list) > 1:
-        return json.dumps(json_list)
+        return json.dumps(json_list), len(json_list)
     else:
-        return json.dumps(json_list).replace("[", "").replace("]", "")
+        return json.dumps(json_list).replace("[", "").replace("]", ""), len(json_list)
 
 
 def main(list_key):
+    json_list, len_json = get_trend(list_key)
     protocol = os.getenv('PROTOCOL')
     host = os.getenv('HOST')
-    api = os.getenv('API')
+    if len_json > 1:
+        api = os.getenv('API_POST_MANY')
+    else:
+        api = os.getenv('API_POST')
     if protocol == None:
         print("please set PROTOCAL environment variable")
         sys.exit(1)
@@ -100,8 +104,6 @@ def main(list_key):
         print("please set API environment variable")
         sys.exit(1)
     url = protocol+"://" + host + "/" + api
-    print(url)
-    json_list = get_trend(list_key)
     res = upload_data(url, json_list)
     res_process(res)
 
