@@ -100,7 +100,7 @@ def main(list_key):
     if api == None:
         print("please set API environment variable")
         sys.exit(1)
-    url = protocol+"://" + host + "/" + api+"/"
+    url = protocol+"://" + host + api
     print(url)
     json_list = get_trend(list_key)
     res = upload_data(url, json_list)
