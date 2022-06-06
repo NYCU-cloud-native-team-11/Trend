@@ -103,7 +103,7 @@ def main(list_key):
     if api == None:
         print("please set API environment variable")
         sys.exit(1)
-    url = protocol+"://" + host + "/" + api
+    url = protocol+"://" + host + api
     res = upload_data(url, json_list)
     res_process(res)
 
