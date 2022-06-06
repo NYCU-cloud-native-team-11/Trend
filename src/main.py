@@ -24,7 +24,6 @@ def get_input(argv_lists):
 
 def upload_data(url, json_list):
     headers = {'content-type': 'application/json'}
-
     r = requests.post(url, data=json_list, headers=headers)
     return r
 
@@ -74,17 +73,17 @@ def get_trend(list_key):
                 preload)-1]['date'].replace("T", " ").replace("Z", "").split(".")[0]
             d = datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
             ts = calendar.timegm(d.utctimetuple())
-            my_dict["date"] = str(datetime.fromtimestamp(ts))
+            my_dict["date"] = str(datetime.fromtimestamp(ts)).split(" ")[0]
         except:
             time = str(datetime.now()).split(".")[0]
             d = datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
             ts = calendar.timegm(d.utctimetuple())
-            my_dict["date"] = str(datetime.fromtimestamp(ts))
+            my_dict["date"] = str(datetime.fromtimestamp(ts))  # .split(" ")[0]
         json_list.append(my_dict)
-
-    json_list = json.dumps(json_list).replace("[", "").replace("]", "")
-    print(json_list)
-    return json_list
+    if len(json_list) > 1:
+        return json.dumps(json_list)
+    else:
+        return json.dumps(json_list).replace("[", "").replace("]", "")
 
 
 def main(list_key):
@@ -100,7 +99,7 @@ def main(list_key):
     if api == None:
         print("please set API environment variable")
         sys.exit(1)
-    url = protocol+"://" + host + "/" + api+"/"
+    url = protocol+"://" + host + "/" + api
     print(url)
     json_list = get_trend(list_key)
     res = upload_data(url, json_list)
