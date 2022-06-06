@@ -7,4 +7,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY src /app
 
-CMD [ "python", "main.py","TSMC", "ASML", "SUMCO" ]
+CMD [ "python", "main.py","TSMC", "ASML", "SUMCO","Applied-Materials" ]
