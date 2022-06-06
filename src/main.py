@@ -4,9 +4,8 @@ import requests
 from pytrends.request import TrendReq
 import json
 from datetime import datetime
-import pprint
+# import pprint
 import calendar
-import os
 import os
 import setting
 
