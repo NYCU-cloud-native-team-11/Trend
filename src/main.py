@@ -14,7 +14,8 @@ def get_input(argv_lists):
     list_key = []
     for i in range(len(argv_lists)):
         if i != 0:
-            list_key.append(argv_lists[i])
+            list_key.append(argv_lists[i].replace("-", " "))
+    print(list_key)
     return list_key
 
 
