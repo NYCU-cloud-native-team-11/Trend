@@ -1,3 +1,4 @@
+from asyncio import protocols
 import sys
 import requests
 from pytrends.request import TrendReq
@@ -5,6 +6,9 @@ import json
 from datetime import datetime
 import pprint
 import calendar
+import os
+import os
+import setting
 
 
 def get_input(argv_lists):
@@ -80,12 +84,25 @@ def get_trend(list_key):
         json_list.append(my_dict)
 
     json_list = json.dumps(json_list).replace("[", "").replace("]", "")
-    # print(json_list)
+    print(json_list)
     return json_list
 
 
 def main(list_key):
-    url = 'https://cloud-11-backend.herokuapp.com/api/trends/'
+    protocol = os.getenv('PROTOCOL')
+    host = os.getenv('HOST')
+    api = os.getenv('API')
+    if protocol == None:
+        print("please set PROTOCAL environment variable")
+        sys.exit(1)
+    if host == None:
+        print("please set HOST environment variable")
+        sys.exit(1)
+    if api == None:
+        print("please set API environment variable")
+        sys.exit(1)
+    url = protocol+"://" + host + "/" + api+"/"
+    print(url)
     json_list = get_trend(list_key)
     res = upload_data(url, json_list)
     res_process(res)
