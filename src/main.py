@@ -55,12 +55,12 @@ def get_trend(list_key):
     preload = json.loads(
         interest_over_time_df.to_json(orient='table'))['data']
 
-    total_count = 0
     for i in range(len(preload)):
         del preload[i]['isPartial']
     # pprint.pprint(preload)  # for debug
     json_list = []
     for j in range(len(keywords)):
+        total_count = 0
         my_dict = {"company": [], "count": [], "date": []}
         company = keywords[j]
         for i in range(len(preload)):
